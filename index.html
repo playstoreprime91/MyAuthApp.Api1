@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lista użytkowników</title>
+</head>
+<body>
+  <h1>Lista użytkowników</h1>
+  <a href="add.html">Dodaj użytkownika</a>
+  <ul id="user-list"></ul>
+
+  <script>
+    async function loadUsers() {
+      const res = await fetch('/api/users');
+      const users = await res.json();
+      const list = document.getElementById('user-list');
+      list.innerHTML = users.map(u => `
+        <li>
+          ${u.name} (${u.email})
+          <a href="edit.html?id=${u.id}">Edytuj</a>
+          <button onclick="del(${u.id})">Usuń</button>
+        </li>`).join('');
+    }
+    async function del(id) {
+      await fetch('/api/users/' + id, { method: 'DELETE' });
+      loadUsers();
+    }
+    loadUsers();
+  </script>
+</body>
+</html>

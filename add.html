@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head><meta charset="UTF-8"><title>Dodaj użytkownika</title></head>
+<body>
+  <h1>Dodaj użytkownika</h1>
+  <form id="form">
+    <input name="name" placeholder="Imię" required />
+    <input name="email" placeholder="Email" required />
+    <button>Dodaj</button>
+  </form>
+  <a href="/">← Wróć</a>
+  <script>
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+      await fetch('/api/users', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data) });
+      location.href = '/';
+    };
+  </script>
+</body>
+</html>
